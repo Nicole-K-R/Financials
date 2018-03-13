@@ -1,0 +1,115 @@
+<%- include templates/header.ejs %>
+		<div class="content">
+            <div class="container-fluid">
+                <!-- Entries for the Month -->
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="header">
+                                <h4 class="title"><%= month %></h4>
+                                <p class="category">Entries for the Month of <%= month %></p>
+                            </div>
+                            <div class="content table-responsive table-full-width">
+                                <table class="table table-striped">
+                                    <thead>
+                                        <th>ID</th>
+                                        <th>Date</th>
+                                        <th>Income/Expense</th>
+                                        <th>Amount ($)</th>
+                                        <th>Method Of Payment</th>
+                                        <th>Description</th>
+                                    </thead>
+                                    <tbody>
+                                        <% entries.forEach(function(entry){ %>
+                                            <tr>
+                                                <td><%= entry.id %></td>
+                                                <td><%= entry.date %></td>
+                                                <td><%= entry.ie %></td>
+                                                <td><%= entry.amount %></td>
+                                                <td><%= entry.mop %></td>
+                                                <td><%= entry.desc %></td>
+                                            </tr>
+                                        <% }); %>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Entries for Credit Card Payments -->
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="header">
+                                <h4 class="title">Credit Card Payments</h4>
+                            </div>
+                            <div class="content table-responsive table-full-width">
+                                <table class="table table-striped">
+                                    <thead>
+                                        <th>ID</th>
+                                        <th>Date</th>
+                                        <th>Amount ($)</th>
+                                        <th>Credit Card</th>
+                                        <th>Method Of Payment</th>
+                                    </thead>
+                                    <tbody>
+                                        <% ccEntries.forEach(function(ccEntry){ %>
+                                            <tr>
+                                                <td><%= ccEntry.id %></td>
+                                                <td><%= ccEntry.date %></td>
+                                                <td><%= ccEntry.amount %></td>
+                                                <td><%= ccEntry.cc %></td>
+                                                <td><%= ccEntry.mop %></td>
+                                            </tr>
+                                        <% }); %>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Entries for the Month -->
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="header">
+                                <h4 class="title"><%= year %></h4>
+                                <p class="category">Entries for <%= year %></p>
+                            </div>
+                            <div class="content table-responsive table-full-width">
+                                <table class="table table-striped">
+                                    <thead>
+                                        <th>ID</th>
+                                        <th>Date</th>
+                                        <th>Income/Expense</th>
+                                        <th>Amount ($)</th>
+                                        <th>Method Of Payment</th>
+                                        <th>Description</th>
+                                    </thead>
+                                    <tbody>
+                                        <% entries.forEach(function(entry){ %>
+                                            <tr>
+                                                <td><%= entry.id %></td>
+                                                <td><%= entry.date %></td>
+                                                <td><%= entry.ie %></td>
+                                                <td><%= entry.amount %></td>
+                                                <td><%= entry.mop %></td>
+                                                <td><%= entry.desc %></td>
+                                            </tr>
+                                        <% }); %>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+			</div>
+		</div>
+<%- include templates/footer.ejs %>
+    <script>
+        $().ready(function(){
+            demo.initGoogleMaps();
+        });
+    </script>
+
+</html>

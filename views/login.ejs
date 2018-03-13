@@ -1,0 +1,73 @@
+<%- include templates/header-login.ejs %>
+	<div class="content">
+		<div class="container-fluid">
+			<!-- Login -->
+			<div class="row">
+				<div class="col-md-12">
+					<div class="card">
+						<div class="header">
+							<h4 class="title">Login</h4>
+						</div>
+						<div class="content">
+							<form>
+								<!-- Email, Password -->
+								<div class="row">
+									<div class="col-md-6">
+										<div class="form-group">
+											<label for="email">Email</label>
+											<input id="email" type="text" class="form-control border-input" placeholder="you@example.com">
+										</div>
+									</div>
+									<div class="col-md-6">
+										<div class="form-group">
+											<label for="email">Password</label>
+											<input id="pass" type="text" class="form-control border-input" placeholder="Password">
+										</div>
+									</div>
+								</div>
+								<div class="text-center">
+									<button id="login-btn" type="button" class="btn btn-info btn-fill btn-wd">Login</button>
+								</div>
+								<div class="clearfix"></div>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+			
+<%- include templates/footer.ejs %>
+<script type="text/javascript">
+	console.log("Connected");
+	$(document).ready(function(){
+		$("#login-btn").on('click', function(){
+			var email = $("#email").val().trim();
+			var pass = $("#pass").val().trim();
+			console.log("Clicked: ", email);
+			$.ajax({
+				method: "POST",
+				url: "/post-login",
+				data: {
+					email: email,
+					pass: pass
+				},
+				success: function(data){
+					console.log(data);
+					if (data.error === 0){
+						Messenger().success({ message: data.Message });
+						// Set Cookie
+						var d = new Date();
+						d.setTime(d.getTime() + (7 * 24 * 60 * 60 * 1000)); // 7 days
+						document.cookie = "currentUser=" + JSON.stringify(data.data) + "; expires=" + d.toUTCString() + ";path=/";
+						location.pathname = "/"; // Redirect to dashboard
+					} else{
+						Messenger().error({ message: data.Message });
+					}
+				},
+				error: function(){
+					Messenger().error({ message: "Error on login" });
+				}
+			});
+		});
+	});
+</script>
+</html>

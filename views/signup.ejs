@@ -1,0 +1,85 @@
+<%- include templates/header-login.ejs %>
+    <div class="content">
+		<div class="container-fluid">
+            <!-- Signup -->
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="header">
+                            <h4 class="title">Signup</h4>
+                        </div>
+                        <div class="content">
+                            <form>
+                                <!-- First Name, Last Name, Email, Password -->
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="fName">First Name</label>
+                                            <input id="fName" type="text" class="form-control border-input" placeholder="First Name">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="lName">Last Name</label>
+                                            <input id="lName" type="text" class="form-control border-input" placeholder="Last Name">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="email">Email</label>
+                                            <input id="email" type="text" class="form-control border-input" placeholder="you@example.com">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="email">Password</label>
+                                            <input id="pass" type="text" class="form-control border-input" placeholder="Password">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="text-center">
+                                    <button id="signup-btn" type="button" class="btn btn-info btn-fill btn-wd">Signup</button>
+                                </div>
+                                <div class="clearfix"></div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>  		
+<%- include templates/footer.ejs %>
+<script type="text/javascript">
+	console.log("Connected");
+	$(document).ready(function(){
+		$("#signup-btn").on('click', function(){
+			var firstName = $("#fName").val().trim();
+			var lastName = $("#lName").val().trim();
+			var email = $("#email").val().trim();
+			var pass = $("#pass").val().trim();
+			console.log("Clicked: ", firstName, ", ", lastName, ", ", email);
+			$.ajax({
+				method: "POST",
+				url: "/post-signup",
+				data: {
+					fName: firstName,
+					lName: lastName,
+					email: email,
+					pass: pass
+				},
+				success: function(data){
+                    console.log(data);
+                    if (data.error === 0){
+                        Messenger().success({ message: data.Message });
+                    } else{
+                        Messenger().error({ message: data.Message });
+                    }
+				},
+				error: function(){
+					Messenger().error({ message: "Error on signup" });
+				}
+			});
+		});
+	});
+</script>
+</html>

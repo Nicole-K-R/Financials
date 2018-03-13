@@ -1,0 +1,188 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<link rel="apple-touch-icon" sizes="76x76" href="assets/img/logo.png">
+	<link rel="icon" type="image/png" sizes="96x96" href="assets/img/logo.png">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+
+	<title>Financial Analysis</title>
+
+	<meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
+    <meta name="viewport" content="width=device-width" />
+
+
+    <!-- Bootstrap core CSS     -->
+    <link href="assets/css/bootstrap.min.css" rel="stylesheet" />
+
+    <!-- Animation library for notifications   -->
+    <link href="assets/css/animate.min.css" rel="stylesheet"/>
+
+    <!--  Paper Dashboard core CSS    -->
+    <link href="assets/css/paper-dashboard.css" rel="stylesheet"/>
+
+
+    <!--  CSS for Demo Purpose, don't include it in your project     -->
+    <link href="assets/css/demo.css" rel="stylesheet" />
+
+    <!--  Fonts and icons  -->
+    <link href="http://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" rel="stylesheet">
+    <link href='https://fonts.googleapis.com/css?family=Muli:400,300' rel='stylesheet' type='text/css'>
+    <link href="assets/css/themify-icons.css" rel="stylesheet">
+
+    <!-- Messenger -->
+    <link href="/assets/plugins/messenger/css/messenger.css" rel="stylesheet"/>
+    <link href="/assets/plugins/messenger/css/messenger-theme-future.css" rel="stylesheet"/>
+</head>
+<body>
+
+<div class="wrapper">
+    <div class="sidebar" data-background-color="black" data-active-color="info">
+        <!--
+            Tip 1: you can change the color of the sidebar's background using: data-background-color="white | black"
+            Tip 2: you can change the color of the active button using the data-active-color="primary | info | success | warning | danger"
+        -->
+    	<div class="sidebar-wrapper">
+            <div class="logo simple-text">
+                <a href="#" class="simple-text">
+                    <script type="text/javascript">
+                        var value = "; " + document.cookie;
+                        var parts = value.split("; currentUser=");
+                        if (parts.length == 2) {
+                            var cookie = JSON.parse(parts.pop().split(";").shift());
+                            console.log(cookie);
+                            name = cookie.fName + " " + cookie.lName;
+                            console.log(name);
+                        }
+                    </script>
+                    <% var name = "Hello World" %>
+                    <%= name %>
+                </a>
+            </div>
+            <ul class="nav">
+                <% if (active === "Dashboard"){ %>
+                <li class="active">
+                <% } else{ %>
+                <li>
+                <% } %>
+                    <a href="dashboard.ejs">
+                        <i class="ti-layout-grid2"></i>
+                        <p>Dashboard</p>
+                    </a>
+                </li>
+                <% if (active === "User Profile"){ %>
+                <li class="active">
+                <% } else{ %>
+                <li>
+                <% } %>
+                    <a href="user.ejs">
+                        <i class="ti-user"></i>
+                        <p>User Profile</p>
+                    </a>
+                </li>
+                <% if (active === "Customization"){ %>
+                <li class="active">
+                <% } else{ %>
+                <li>
+                <% } %>
+                    <a href="customization.ejs">
+                        <i class="ti-panel"></i>
+                        <p>Customization</p>
+                    </a>
+                </li>
+                <% if (active === "Reports"){ %>
+                <li class="active">
+                <% } else{ %>
+                <li>
+                <% } %>
+                    <a href="reports.ejs">
+                        <i class="ti-stats-up"></i>
+                        <p>Reports</p>
+                    </a>
+                </li>
+                <% if (active === "Add Entries"){ %>
+                <li class="active">
+                <% } else{ %>
+                <li>
+                <% } %>
+                    <a href="add-entries.ejs">
+                        <i class="ti-pencil"></i>
+                        <p>Add Entry</p>
+                    </a>
+                </li>
+                <% if (active === "View Entries"){ %>
+                <li class="active">
+                <% } else{ %>
+                <li>
+                <% } %>
+                    <a href="view-entries.ejs">
+                        <i class="ti-files"></i>
+                        <p>View Entries</p>
+                    </a>
+                </li>
+                <% if (active === "Notifications"){ %>
+                <li class="active">
+                <% } else{ %>
+                <li>
+                <% } %>
+                    <a href="notifications.ejs">
+                        <i class="ti-bell"></i>
+                        <p>Notifications</p>
+                    </a>
+                </li>
+            </ul>
+    	</div>
+    </div>
+
+    <div class="main-panel">
+        <nav class="navbar navbar-default">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar bar1"></span>
+                        <span class="icon-bar bar2"></span>
+                        <span class="icon-bar bar3"></span>
+                    </button>
+                    <a class="navbar-brand" href="#"><%= active %></a>
+                </div>
+                <div class="collapse navbar-collapse">
+                    <ul class="nav navbar-nav navbar-right">
+                        <li>
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                <i class="ti-panel"></i>
+								<p>Stats</p>
+                            </a>
+                        </li>
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                <i class="ti-bell"></i>
+                                <p class="notification">5</p>
+                                <p>Notifications</p>
+                                <b class="caret"></b>
+                            </a>
+                            <ul class="dropdown-menu">
+                            <li><a href="#">Notification 1</a></li>
+                            <li><a href="#">Notification 2</a></li>
+                            <li><a href="#">Notification 3</a></li>
+                            <li><a href="#">Notification 4</a></li>
+                            <li><a href="#">Another notification</a></li>
+                            </ul>
+                        </li>
+						<li>
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                <i class="ti-settings"></i>
+                                <p>Settings</p>
+                                <b class="caret"></b>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a href="#">Profile</a></li>
+                                <li><a href="#">Account Settings</a></li>
+                                <li><a id="logout" href="#">Logout</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+
+                </div>
+            </div>
+        </nav>

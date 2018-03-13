@@ -1,0 +1,213 @@
+<%- include templates/header.ejs %>
+        <div class="content">
+            <div class="container-fluid">
+				<!-- Add Entry -->
+                <div class="row">
+                    <div class="col-md-12">
+						<div class="card">
+							<div class="header">
+								<h4 class="title">Add Entry</h4>
+							</div>
+							<div class="content">
+								<form>
+									<!-- Date, Country, Amount, Income/Expense -->
+									<div class="row">
+										<div class="col-md-4">
+											<div class="form-group">
+												<label for="date">Date</label>
+												<input id="date" type="text" class="form-control border-input" placeholder="YYYY-MM-DD">
+											</div>
+										</div>
+										<div class="col-md-3">
+											<div class="form-group">
+												<label for="country">Country</label>
+												<input id="country" type="text" class="form-control border-input" placeholder="Country" value="Canada">
+											</div>
+										</div>
+										<div class="col-md-2">
+											<div class="form-group">
+												<label for="amount">Amount</label>
+												<input id="amount" type="text" class="form-control border-input" placeholder="$100">
+											</div>
+										</div>
+										<div class="col-md-3">
+											<div class="form-group">
+												<label for="inc_exp">Income/Expense</label>
+												<input id="inc_exp" type="text" class="form-control border-input" placeholder="(I)ncome/(E)xpense">
+											</div>
+										</div>
+										
+									</div>
+									<!-- Company, Method of Payment -->
+									<div class="row">
+										<div class="col-md-6">
+											<div class="form-group">
+												<label for="comp">Company</label>
+												<input id="comp" type="text" class="form-control border-input" placeholder="Company">
+											</div>
+										</div>
+										<div class="col-md-4">
+											<div class="form-group" style="padding-left:60px;">
+												<label for="amount">Method Of Payment</label>
+												<div class="dropdown">
+													<a href="#" class="btn dropdown-toggle" data-toggle="dropdown">
+														Method Of Payment<b class="caret"></b>
+													</a>
+													<ul class="dropdown-menu">
+														<li><a href="#" value="CC">Credit Card</a></li>
+														<li><a href="#" value="CH">Chequing</a></li>
+														<li><a href="#" value="S">Savings</a></li>
+														<li><a href="#" value="C">Cash</a></li>
+													</ul>
+												</div>
+											</div>
+										</div>
+									</div>
+									<!-- Description -->
+									<div class="row">
+										<div class="col-md-12">
+											<div class="form-group">
+												<label for="desc">Description</label>
+												<textarea id="desc" rows="3" class="form-control border-input" placeholder="Description of entry"></textarea>
+											</div>
+										</div>
+									</div>
+									<div class="text-center">
+										<button id="add-entry-btn" type="button" class="btn btn-info btn-fill btn-wd">Add Entry</button>
+									</div>
+									<div class="clearfix"></div>
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- Pay Credit Card Bill -->
+				<div class="row">
+					<div class="col-md-12">
+						<div class="card">
+							<div class="header">
+								<h4 class="title">Pay Credit Card Bill</h4>
+							</div>
+							<div class="content">
+								<form>
+									<!-- Row -->
+									<div class="row">
+										<!-- Date -->
+										<div class="col-md-3">
+											<div class="form-group">
+												<label for="date">Date</label>
+												<input id="date" type="text" class="form-control border-input" placeholder="YYYY-MM-DD">
+											</div>
+										</div>
+										<!-- Amount -->
+										<div class="col-md-2">
+											<div class="form-group" style="padding-left:30px;">
+												<label for="amount">Amount</label>
+												<input id="amount" type="text" class="form-control border-input" placeholder="$100">
+											</div>
+										</div>
+										<!-- Method Of Payment -->
+										<div class="col-md-3">
+											<div class="form-group" style="padding-left:60px;">
+												<label for="amount">Method Of Payment</label>
+												<div class="dropdown">
+													<a href="#" class="btn dropdown-toggle" data-toggle="dropdown">
+														Method Of Payment<b class="caret"></b>
+													</a>
+													<ul class="dropdown-menu">
+														<li><a href="#" value="CC">Credit Card</a></li>
+														<li><a href="#" value="CH">Chequing</a></li>
+														<li><a href="#" value="S">Savings</a></li>
+														<li><a href="#" value="C">Cash</a></li>
+													</ul>
+												</div>
+											</div>
+										</div>
+										<!-- Credit Card -->
+										<div class="col-md-3">
+											<div class="form-group" style="padding-left:60px;">
+												<label for="amount">Credit Card</label>
+												<div class="dropdown">
+													<a href="#" class="btn dropdown-toggle" data-toggle="dropdown">
+														Credit Card<b class="caret"></b>
+													</a>
+													<ul class="dropdown-menu">
+														<li><a href="#" value="DD">Double Double</a></li>
+													</ul>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="text-center">
+										<button id="add-entry" type="button" class="btn btn-info btn-fill btn-wd">Add Payment</button>
+									</div>
+									<div class="clearfix"></div>
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+            </div>
+        </div>
+<%- include templates/footer.ejs %>
+<script type="text/javascript">
+	console.log("Connected - Add Entries");
+	$(document).ready(function(){
+		$("#add-entry-btn").on('click', function(){
+			var email;
+			// Get Property from Cookie
+			var value = "; " + document.cookie;
+			var parts = value.split("; currentUser=");
+			if (parts.length == 2) {
+				var cookie = JSON.parse(parts.pop().split(";").shift());
+				console.log(cookie);
+				email = cookie.email;
+			}
+			// Get values from form
+			var date = $("#date").val().trim(); // YYYY-MM-DD
+			var amount = $("#amount").val().trim();
+			var country = $("#country").val().trim();
+			var ie = $("#inc_exp").val().trim();
+			var comp = $("#comp").val().trim();
+			// Dropdown MOP
+			// var mop = $("#mop").val().trim();
+			var mop = "CH"; // ***** REMOVE ***** //
+			// Dropdown Type
+			// var type = $("#type").val().trim();
+			var type = "savings";
+			var desc = document.getElementById("desc").value.trim();
+			var dateArr = date.split("-");
+			console.log("Clicked-Add: ", email);
+			$.ajax({
+				method: "POST",
+				url: "/post-add-entry",
+				data: {
+					email: email,
+					day: dateArr[2],
+					month: dateArr[1],
+					year: dateArr[0],
+					ie: ie, 
+					amount: amount,
+					mop: mop,
+					desc: desc,
+					type: type,
+					country: country,
+					company: comp,	
+				},
+				success: function(data){
+					console.log(data);
+					if (data.error === 0){
+						Messenger().success({ message: data.Message });
+					} else{
+						Messenger().error({ message: data.Message });
+					}
+				},
+				error: function(){
+					Messenger().error({ message: "Error on login" });
+				}
+			});
+		});
+	});
+</script>
+
+</html>

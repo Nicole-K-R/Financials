@@ -1,0 +1,25 @@
+{
+  "name": "financials",
+  "version": "1.0.0",
+  "description": "Web app to help visualize and record financials",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Nicole-K-R/Financials.git"
+  },
+  "author": "Nicole Rosario",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Nicole-K-R/Financials/issues"
+  },
+  "homepage": "https://github.com/Nicole-K-R/Financials#readme",
+  "dependencies": {
+    "express": "^4.16.2",
+    "mongodb": "^3.0.4",
+    "mongoose": "^5.0.9",
+    "sha256": "^0.2.0"
+  }
+}
