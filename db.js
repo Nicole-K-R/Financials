@@ -37,12 +37,19 @@ var entriesSchema = new Schema({
 var creditSchema = new Schema({
     email: String,
     id: Number,
-    month: String, // Make YYYY-MM-DD
-    day: String, // Make YYYY-MM-DD
-    year: String, // Make YYYY-MM-DD
+    month: String, // M
+    day: String, // D
+    year: String, // YYYY
     amount: Number,
     cc: {type: String, enum: ["DD"]},
-    mop: {type: String, enum: ["CC", "CH", "S", "C"]}
+    mop: {type: String, enum: ["CH", "S"]},
+    monthStart: String, // M
+    dayStart: String, // D
+    yearStart: String, // YYYY
+    monthEnd: String, // M
+    dayEnd: String, // D
+    yearEnd: String, // YYYY
+
 });
 // Store list of users
 var userSchema = new Schema({
@@ -196,6 +203,44 @@ exports.createEntry = function(email, day, month, year, ie, amount, mop, desc, t
                 response = {
                     'error':0,
                     'Message': "Successfully created entry"
+                }
+                res.status(200).send(response);
+            }
+        });
+    });
+}
+
+// Create entry into the entries model DB
+exports.createCreditEntry = function(email, day, month, year, amount, mop, cc, dayStart, monthStart, yearStart,
+dayEnd, monthEnd, yearEnd, res){
+    userModel.find({ "email": email }, '', function (err, results) {
+        creditModel.create({
+            email: email,
+            id: results.creditCount,
+            month: month, // M
+            day: day, // D
+            year: year, // YYYY
+            amount: amount,
+            cc: cc,
+            mop: mop,
+            monthStart: monthStart, // M
+            dayStart: dayStart, // D
+            yearStart: yearStart, // YYYY
+            monthEnd: monthEnd, // M
+            dayEnd: dayEnd, // D
+            yearEnd: yearEnd // YYYY
+        }, function (err, result) {
+            console.log(result);
+            if (err){
+                response = {
+                    'error': 1,
+                    'Message': err
+                }
+                res.status(200).send(response);
+            } else{
+                response = {
+                    'error':0,
+                    'Message': "Successfully created credit card payment entry"
                 }
                 res.status(200).send(response);
             }

@@ -18,12 +18,8 @@ api.app.get('/dashboard.ejs', function(req, res){
 });
 
 // Pages (Single element in render object)
-api.app.get('/add-entries.ejs', function(req, res){
-    res.status(200).render('add-entries', { active: "Add Entries" });
-});
-api.app.get('/notifications.ejs', function(req, res){
-    res.status(200).render('notifications', { active: "Notifications" });
-});
+api.app.get('/add-entries.ejs', function(req, res){ res.status(200).render('add-entries'); });
+api.app.get('/notifications.ejs', function(req, res){ res.status(200).render('notifications'); });
 api.app.get('/customization.ejs', function(req, res){
     res.status(200).render('customization', { active: "Customization" });
 });
@@ -102,7 +98,7 @@ api.app.post('/post-signup', function(req, res){
 });
 // Create entry
 api.app.post('/post-add-entry', function(req, res){
-    var body = req.body;
+    var body = req.body; // Get body of request
     var email = body.email;
     var day = body.day;
     var month = body.month;
@@ -115,6 +111,27 @@ api.app.post('/post-add-entry', function(req, res){
     var country = body.country;
     var company = body.company;
     db.createEntry(email, day, month, year, ie, amount, mop, desc, type, country, company, res);
+});
+
+// Create credit card payment entry
+api.app.post('/post-add-credit-entry', function(req, res){
+    var body = req.body; // Get body of request
+    var email = body.email;
+    var day = body.day;
+    var month = body.month;
+    var year = body.year;
+    var amount = body.amount;
+    var mop = body.mop;
+    var cc = body.cc;
+    var dayStart = body.dayStart;
+    var monthStart = body.monthStart;
+    var yearStart = body.yearStart;
+    var dayEnd = body.dayEnd;
+    var monthEnd = body.monthEnd;
+    var yearEnd = body.yearEnd;
+    // ***** CREATE DB FUNCTION AND EDIT PROPERTIES OF DB (ADD START/END DATE, ...)
+    db.createEntry(email, day, month, year, amount, mop, cc, dayStart, monthStart, yearStart, dayEnd, monthEnd,
+        yearEnd, res);
 });
 
 api.app.listen(7000, function () {

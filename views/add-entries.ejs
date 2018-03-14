@@ -1,4 +1,22 @@
+<% active= "Add Entries" %>
 <%- include templates/header.ejs %>
+		<!-- Functions -->
+		<script type="text/javascript">
+			// Select dropdown value
+			function selectDropdown(dropdownMenu, value){
+				if (dropdownMenu === "mop-add"){ // Method of Payment for Add Entry
+					document.getElementById("mop-add-val").textContent = value;					
+				} else if (dropdownMenu === "type-add"){ // Type for Add Entry
+					document.getElementById("type-add-val").textContent = value;
+				} else if (dropdownMenu === "mop-credit"){ // Method of Payment for Credit Entry
+					document.getElementById("mop-credit-val").textContent = value;
+				} else if (dropdownMenu === "cc-credit"){ // Credit Card for Credit Entry
+					document.getElementById("cc-credit-val").textContent = value;
+				}
+				return false;
+			}
+		</script>
+
         <div class="content">
             <div class="container-fluid">
 				<!-- Add Entry -->
@@ -10,12 +28,30 @@
 							</div>
 							<div class="content">
 								<form>
-									<!-- Date, Country, Amount, Income/Expense -->
+									<!-- Year, Month, Day, Country, Company -->
 									<div class="row">
-										<div class="col-md-4">
+										<% 
+										var d = new Date();
+										var year = d.getFullYear();
+										var month = d.getMonth() + 1;
+										var day = d.getDate();
+										%> 
+										<div class="col-md-2">
 											<div class="form-group">
-												<label for="date">Date</label>
-												<input id="date" type="text" class="form-control border-input" placeholder="YYYY-MM-DD">
+												<label for="year">Year</label>
+												<input id="year" type="text" class="form-control border-input" value="<%= year %>">
+											</div>
+										</div>
+										<div class="col-md-1">
+											<div class="form-group">
+												<label for="month">Month</label>
+												<input id="month" type="text" class="form-control border-input" value="<%= month %>">
+											</div>
+										</div>
+										<div class="col-md-1">
+											<div class="form-group">
+												<label for="day">Day</label>
+												<input id="day" type="text" class="form-control border-input" value="<%= day %>">
 											</div>
 										</div>
 										<div class="col-md-3">
@@ -24,40 +60,63 @@
 												<input id="country" type="text" class="form-control border-input" placeholder="Country" value="Canada">
 											</div>
 										</div>
+										<div class="col-md-4">
+											<div class="form-group">
+												<label for="comp">Company</label>
+												<input id="comp" type="text" class="form-control border-input" placeholder="Company">
+											</div>
+										</div>
+									</div>
+									<!-- Amount, Income/Expense, Method of Payment, Type -->
+									<div class="row">
 										<div class="col-md-2">
 											<div class="form-group">
 												<label for="amount">Amount</label>
 												<input id="amount" type="text" class="form-control border-input" placeholder="$100">
 											</div>
 										</div>
-										<div class="col-md-3">
+										<div class="col-md-2">
 											<div class="form-group">
 												<label for="inc_exp">Income/Expense</label>
-												<input id="inc_exp" type="text" class="form-control border-input" placeholder="(I)ncome/(E)xpense">
+												<input id="inc_exp" type="text" class="form-control border-input" value="E">
 											</div>
 										</div>
-										
-									</div>
-									<!-- Company, Method of Payment -->
-									<div class="row">
-										<div class="col-md-6">
-											<div class="form-group">
-												<label for="comp">Company</label>
-												<input id="comp" type="text" class="form-control border-input" placeholder="Company">
-											</div>
-										</div>
-										<div class="col-md-4">
+										<div class="col-md-3">
 											<div class="form-group" style="padding-left:60px;">
 												<label for="amount">Method Of Payment</label>
 												<div class="dropdown">
-													<a href="#" class="btn dropdown-toggle" data-toggle="dropdown">
-														Method Of Payment<b class="caret"></b>
-													</a>
+													<button type="button" id="mop-add-val" href="#" class="btn dropdown-toggle" data-toggle="dropdown">
+														Method of Payment<b class="caret"></b>
+													</button>
+													<ul id="mop-dropdown" class="dropdown-menu">
+														<li><a href="#" value="CH" onclick="return selectDropdown('mop-add','CH')">Chequing</a></li>
+														<li><a href="#" value="S" onclick="return selectDropdown('mop-add','S')">Savings</a></li>
+														<li class="divider"></li>
+														<li><a href="#" value="CC" onclick="return selectDropdown('mop-add','CC')">Credit Card</a></li>
+														<li class="divider"></li>
+														<li><a href="#" value="C" onclick="return selectDropdown('mop-add','C')">Cash</a></li>
+													</ul>
+												</div>
+											</div>
+										</div>
+										<div class="col-md-3">
+											<div class="form-group" style="padding-left:60px;">
+												<label for="amount">Type of Entry</label>
+												<div class="dropdown">
+													<button id="type-add-val" href="#" class="btn dropdown-toggle" data-toggle="dropdown">
+														Type of Entry<b class="caret"></b>
+													</button>
 													<ul class="dropdown-menu">
-														<li><a href="#" value="CC">Credit Card</a></li>
-														<li><a href="#" value="CH">Chequing</a></li>
-														<li><a href="#" value="S">Savings</a></li>
-														<li><a href="#" value="C">Cash</a></li>
+														<li><a href="#" value="income" onclick="return selectDropdown('type-add','income')">Income</a></li>
+														<li><a href="#" value="savings" onclick="return selectDropdown('type-add','savings')">Savings</a></li>
+														<li class="divider"></li>
+														<li><a href="#" value="food" onclick="return selectDropdown('type-add','food')">Food</a></li>
+														<li><a href="#" value="rent" onclick="return selectDropdown('type-add','rent')">Rent</a></li>
+														<li><a href="#" value="personal" onclick="return selectDropdown('type-add','personal')">Personal</a></li>
+														<li><a href="#" value="entertainment" onclick="return selectDropdown('type-add','entertainment')">Entertainment</a></li>
+														<li><a href="#" value="school" onclick="return selectDropdown('type-add','school')">School</a></li>
+														<li><a href="#" value="miscellaneous" onclick="return selectDropdown('type-add','miscellaneous')">Miscellaneous</a></li>
+														<li><a href="#" value="projects" onclick="return selectDropdown('type-add','projects')">Projects</a></li>
 													</ul>
 												</div>
 											</div>
@@ -68,11 +127,11 @@
 										<div class="col-md-12">
 											<div class="form-group">
 												<label for="desc">Description</label>
-												<textarea id="desc" rows="3" class="form-control border-input" placeholder="Description of entry"></textarea>
+												<textarea id="desc" rows="7" class="form-control border-input" placeholder="Description of entry"></textarea>
 											</div>
 										</div>
 									</div>
-									<div class="text-center">
+									<div class="text-center" style="margin-bottom: 60px;margin-top: 40px;">
 										<button id="add-entry-btn" type="button" class="btn btn-info btn-fill btn-wd">Add Entry</button>
 									</div>
 									<div class="clearfix"></div>
@@ -90,20 +149,38 @@
 							</div>
 							<div class="content">
 								<form>
-									<!-- Row -->
+									<!-- Row (Date, Amount, Method of Payment, Credit Card) -->
 									<div class="row">
 										<!-- Date -->
-										<div class="col-md-3">
+										<% 
+										var d = new Date();
+										var year = d.getFullYear();
+										var month = d.getMonth() + 1;
+										var day = d.getDate();
+										%> 
+										<div class="col-md-2">
 											<div class="form-group">
-												<label for="date">Date</label>
-												<input id="date" type="text" class="form-control border-input" placeholder="YYYY-MM-DD">
+												<label for="year-credit">Year</label>
+												<input id="year-credit" type="text" class="form-control border-input" value="<%= year %>">
+											</div>
+										</div>
+										<div class="col-md-1">
+											<div class="form-group">
+												<label for="month-credit">Month</label>
+												<input id="month-credit" type="text" class="form-control border-input" value="<%= month %>">
+											</div>
+										</div>
+										<div class="col-md-1">
+											<div class="form-group">
+												<label for="day-credit">Day</label>
+												<input id="day-credit" type="text" class="form-control border-input" value="<%= day %>">
 											</div>
 										</div>
 										<!-- Amount -->
 										<div class="col-md-2">
 											<div class="form-group" style="padding-left:30px;">
-												<label for="amount">Amount</label>
-												<input id="amount" type="text" class="form-control border-input" placeholder="$100">
+												<label for="amount-credit">Amount</label>
+												<input id="amount-credit" type="text" class="form-control border-input" placeholder="$100">
 											</div>
 										</div>
 										<!-- Method Of Payment -->
@@ -111,14 +188,12 @@
 											<div class="form-group" style="padding-left:60px;">
 												<label for="amount">Method Of Payment</label>
 												<div class="dropdown">
-													<a href="#" class="btn dropdown-toggle" data-toggle="dropdown">
+													<button id="mop-credit-val" href="#" class="btn dropdown-toggle" data-toggle="dropdown">
 														Method Of Payment<b class="caret"></b>
-													</a>
+													</button>
 													<ul class="dropdown-menu">
-														<li><a href="#" value="CC">Credit Card</a></li>
-														<li><a href="#" value="CH">Chequing</a></li>
-														<li><a href="#" value="S">Savings</a></li>
-														<li><a href="#" value="C">Cash</a></li>
+														<li><a href="#" value="CH" onclick="return selectDropdown('mop-credit','CH')">Chequing</a></li>
+														<li><a href="#" value="S" onclick="return selectDropdown('mop-credit','S')">Savings</a></li>
 													</ul>
 												</div>
 											</div>
@@ -128,18 +203,74 @@
 											<div class="form-group" style="padding-left:60px;">
 												<label for="amount">Credit Card</label>
 												<div class="dropdown">
-													<a href="#" class="btn dropdown-toggle" data-toggle="dropdown">
+													<button id="cc-credit-val" href="#" class="btn dropdown-toggle" data-toggle="dropdown">
 														Credit Card<b class="caret"></b>
-													</a>
+													</button>
 													<ul class="dropdown-menu">
-														<li><a href="#" value="DD">Double Double</a></li>
+														<li><a href="#" value="DD" onclick="return selectDropdown('cc-credit','DD')">Double Double</a></li>
 													</ul>
 												</div>
 											</div>
 										</div>
 									</div>
-									<div class="text-center">
-										<button id="add-entry" type="button" class="btn btn-info btn-fill btn-wd">Add Payment</button>
+									<!-- Start Date -->
+									<div class="row">
+										<div class="col-md-2">
+											<div class="form-group">
+												<div class="header" style="margin-top: 10px;">
+													<h5 class="title">Start Date: </h5>
+												</div>
+											</div>
+										</div>
+										<div class="col-md-2">
+											<div class="form-group">
+												<label for="year-start">Year</label>
+												<input id="year-start" type="text" class="form-control border-input" value="<%= year %>">
+											</div>
+										</div>
+										<div class="col-md-1">
+											<div class="form-group">
+												<label for="month-start">Month</label>
+												<input id="month-start" type="text" class="form-control border-input" placeholder="m">
+											</div>
+										</div>
+										<div class="col-md-1">
+											<div class="form-group">
+												<label for="day-start">Day</label>
+												<input id="day-start" type="text" class="form-control border-input" placeholder="d">
+											</div>
+										</div>
+									</div>
+									<!-- End Date -->
+									<div class="row">
+										<div class="col-md-2">
+											<div class="form-group">
+												<div class="header" style="margin-top: 10px;">
+													<h5 class="title">End Date: </h5>
+												</div>
+											</div>
+										</div>
+										<div class="col-md-2">
+											<div class="form-group">
+												<label for="year-end">Year</label>
+												<input id="year-end" type="text" class="form-control border-input" value="<%= year %>">
+											</div>
+										</div>
+										<div class="col-md-1">
+											<div class="form-group">
+												<label for="month-end">Month</label>
+												<input id="month-end" type="text" class="form-control border-input" placeholder="m">
+											</div>
+										</div>
+										<div class="col-md-1">
+											<div class="form-group">
+												<label for="day-end">Day</label>
+												<input id="day-end" type="text" class="form-control border-input" placeholder="d">
+											</div>
+										</div>
+									</div>
+									<div class="text-center" style="margin-bottom: 30px;margin-top: 20px;">
+										<button id="add-credit-entry-btn" type="button" class="btn btn-info btn-fill btn-wd">Add Payment</button>
 									</div>
 									<div class="clearfix"></div>
 								</form>
@@ -152,7 +283,14 @@
 <%- include templates/footer.ejs %>
 <script type="text/javascript">
 	console.log("Connected - Add Entries");
-	$(document).ready(function(){
+	$(document).ready(function(){	
+
+		// Test
+		$("#mop-add-val").on("click", function(){
+			console.log($("#mop-add-val").text());
+		});
+
+		// Submit add entry form
 		$("#add-entry-btn").on('click', function(){
 			var email;
 			// Get Property from Cookie
@@ -164,28 +302,25 @@
 				email = cookie.email;
 			}
 			// Get values from form
-			var date = $("#date").val().trim(); // YYYY-MM-DD
-			var amount = $("#amount").val().trim();
+			var year = $("#year").val().trim();
+			var month = $("#month").val().trim();
+			var day = $("#day").val().trim();
 			var country = $("#country").val().trim();
-			var ie = $("#inc_exp").val().trim();
 			var comp = $("#comp").val().trim();
-			// Dropdown MOP
-			// var mop = $("#mop").val().trim();
-			var mop = "CH"; // ***** REMOVE ***** //
-			// Dropdown Type
-			// var type = $("#type").val().trim();
-			var type = "savings";
+			var amount = $("#amount").val().trim();
+			var ie = $("#inc_exp").val().trim();
+			var mop = document.getElementById("mop-add-val").textContent
+			var type = document.getElementById("type-add-val").textContent
 			var desc = document.getElementById("desc").value.trim();
-			var dateArr = date.split("-");
-			console.log("Clicked-Add: ", email);
+
 			$.ajax({
 				method: "POST",
 				url: "/post-add-entry",
 				data: {
 					email: email,
-					day: dateArr[2],
-					month: dateArr[1],
-					year: dateArr[0],
+					day: day,
+					month: month,
+					year: year,
 					ie: ie, 
 					amount: amount,
 					mop: mop,
@@ -195,12 +330,63 @@
 					company: comp,	
 				},
 				success: function(data){
-					console.log(data);
-					if (data.error === 0){
-						Messenger().success({ message: data.Message });
-					} else{
-						Messenger().error({ message: data.Message });
-					}
+					// console.log(data);
+					if (data.error === 0){ Messenger().success({ message: data.Message }); }
+					else{ Messenger().error({ message: data.Message }); }
+				},
+				error: function(){
+					Messenger().error({ message: "Error on login" });
+				}
+			});
+		});
+
+		// Submit add credit card payment form
+		$("#add-credit-entry-btn").on('click', function(){
+			var email;
+			// Get Property from Cookie
+			var value = "; " + document.cookie;
+			var parts = value.split("; currentUser=");
+			if (parts.length == 2) {
+				var cookie = JSON.parse(parts.pop().split(";").shift());
+				console.log(cookie);
+				email = cookie.email;
+			}
+			// Get values from form
+			var year = $("#year-credit").val().trim();
+			var month = $("#month-credit").val().trim();
+			var day = $("#day-credit").val().trim();
+			var amount = $("#amount-credit").val().trim();
+			var mop = document.getElementById("mop-credit-val").textContent
+			var cc = document.getElementById("cc-credit-val").textContent
+			var startYear = $("#year-start").val().trim();
+			var startMonth = $("#month-start").val().trim();
+			var startDay = $("#day-start").val().trim();
+			var endYear = $("#year-end").val().trim();
+			var endMonth = $("#month-end").val().trim();
+			var endDay = $("#day-end").val().trim();
+
+			$.ajax({
+				method: "POST",
+				url: "/post-add-credit-entry",
+				data: {
+					email: email,
+					year: year,
+					month: month,
+					day: day,
+					amount: amount,
+					mop: mop,
+					cc: cc,
+					dayStart: dayStart,
+					monthStart: monthStart,
+					yearStart: yearStart,
+					dayEnd: dayEnd,
+					monthEnd: monthEnd, 
+					yearEnd: yearEnd 
+				},
+				success: function(data){
+					// console.log(data);
+					if (data.error === 0){ Messenger().success({ message: data.Message }); }
+					else{ Messenger().error({ message: data.Message }); }
 				},
 				error: function(){
 					Messenger().error({ message: "Error on login" });
