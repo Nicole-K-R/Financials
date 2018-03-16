@@ -10,30 +10,40 @@
                                 <h4 class="title"><%= month %></h4>
                                 <p class="category">Entries for the Month of <%= month %></p>
                             </div>
-                            <div class="content table-responsive table-full-width">
-                                <table class="table table-striped">
-                                    <thead>
-                                        <th>ID</th>
-                                        <th>Date</th>
-                                        <th>Income/Expense</th>
-                                        <th>Amount ($)</th>
-                                        <th>Method Of Payment</th>
-                                        <th>Description</th>
-                                    </thead>
-                                    <tbody>
-                                        <% entries.forEach(function(entry){ %>
-                                            <tr>
-                                                <td><%= entry.id %></td>
-                                                <td><%= entry.date %></td>
-                                                <td><%= entry.ie %></td>
-                                                <td><%= entry.amount %></td>
-                                                <td><%= entry.mop %></td>
-                                                <td><%= entry.desc %></td>
-                                            </tr>
-                                        <% }); %>
-                                    </tbody>
-                                </table>
-                            </div>
+                            <% if (monthEntries.length !== 0){ %>
+                                <div class="content table-responsive table-full-width">
+                                    <table class="table table-striped">
+                                        <thead>
+                                            <th>ID</th>
+                                            <th>Date</th>
+                                            <th>($)</th>
+                                            <th>I/E</th>
+                                            <th>Type</th>
+                                            <th>M.O.P</th>
+                                            <th>Company</th>
+                                            <th>Description</th>
+                                        </thead>
+                                        <tbody>
+                                            <% monthEntries.forEach(function(month){ %>
+                                                <tr>
+                                                    <td><%= month.id %></td>
+                                                    <td><%= month.date %></td>
+                                                    <td><%= month.amount %></td>
+                                                    <td><%= month.ie %></td>
+                                                    <td><%= month.type %></td>
+                                                    <td><%= month.mop %></td>
+                                                    <td><%= month.comp %></td>
+                                                    <td><%= month.desc %></td>
+                                                </tr>
+                                            <% }); %>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            <% } else { %>
+                                <div class="content table-responsive table-full-width" style="margin-left: 1%;">
+                                    There are no entries for <%= month %>
+                                </div>
+                            <% } %>
                         </div>
                     </div>
                 </div>
@@ -44,32 +54,42 @@
                             <div class="header">
                                 <h4 class="title">Credit Card Payments</h4>
                             </div>
-                            <div class="content table-responsive table-full-width">
-                                <table class="table table-striped">
-                                    <thead>
-                                        <th>ID</th>
-                                        <th>Date</th>
-                                        <th>Amount ($)</th>
-                                        <th>Credit Card</th>
-                                        <th>Method Of Payment</th>
-                                    </thead>
-                                    <tbody>
-                                        <% ccEntries.forEach(function(ccEntry){ %>
-                                            <tr>
-                                                <td><%= ccEntry.id %></td>
-                                                <td><%= ccEntry.date %></td>
-                                                <td><%= ccEntry.amount %></td>
-                                                <td><%= ccEntry.cc %></td>
-                                                <td><%= ccEntry.mop %></td>
-                                            </tr>
-                                        <% }); %>
-                                    </tbody>
-                                </table>
-                            </div>
+                            <% if (creditEntries.length !== 0){ %>
+                                <div class="content table-responsive table-full-width">
+                                    <table class="table table-striped">
+                                        <thead>
+                                            <th>ID</th>
+                                            <th>Date</th>
+                                            <th>($)</th>
+                                            <th>Credit Card</th>
+                                            <th>M.O.P</th>
+                                            <th>Start Date</th>
+                                            <th>End Date</th>
+                                        </thead>
+                                        <tbody>
+                                            <% creditEntries.forEach(function(credit){ %>
+                                                <tr>
+                                                    <td><%= credit.id %></td>
+                                                    <td><%= credit.date %></td>
+                                                    <td><%= credit.amount %></td>
+                                                    <td><%= credit.cc %></td>
+                                                    <td><%= credit.mop %></td>
+                                                    <td><%= credit.startDate %></td>
+                                                    <td><%= credit.endDate %></td>
+                                                </tr>
+                                            <% }); %>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            <% } else { %>
+                                <div class="content table-responsive table-full-width" style="margin-left: 1%;">
+                                    There are no credit card payment entries for <%= year %>
+                                </div>
+                            <% } %>
                         </div>
                     </div>
                 </div>
-                <!-- Entries for the Month -->
+                <!-- Entries for the Year -->
                 <div class="row">
                     <div class="col-md-12">
                         <div class="card">
@@ -77,30 +97,40 @@
                                 <h4 class="title"><%= year %></h4>
                                 <p class="category">Entries for <%= year %></p>
                             </div>
-                            <div class="content table-responsive table-full-width">
-                                <table class="table table-striped">
-                                    <thead>
-                                        <th>ID</th>
-                                        <th>Date</th>
-                                        <th>Income/Expense</th>
-                                        <th>Amount ($)</th>
-                                        <th>Method Of Payment</th>
-                                        <th>Description</th>
-                                    </thead>
-                                    <tbody>
-                                        <% entries.forEach(function(entry){ %>
-                                            <tr>
-                                                <td><%= entry.id %></td>
-                                                <td><%= entry.date %></td>
-                                                <td><%= entry.ie %></td>
-                                                <td><%= entry.amount %></td>
-                                                <td><%= entry.mop %></td>
-                                                <td><%= entry.desc %></td>
-                                            </tr>
-                                        <% }); %>
-                                    </tbody>
-                                </table>
-                            </div>
+                            <% if (yearEntries.length !== 0){ %>
+                                <div class="content table-responsive table-full-width">
+                                    <table class="table table-striped">
+                                        <thead>
+                                            <th>ID</th>
+                                            <th>Date</th>
+                                            <th>($)</th>
+                                            <th>I/E</th>
+                                            <th>Type</th>
+                                            <th>M.O.P</th>
+                                            <th>Company</th>
+                                            <th>Description</th>
+                                        </thead>
+                                        <tbody>
+                                            <% yearEntries.forEach(function(year){ %>
+                                                <tr>
+                                                    <td><%= year.id %></td>
+                                                    <td><%= year.date %></td>
+                                                    <td><%= year.amount %></td>
+                                                    <td><%= year.ie %></td>
+                                                    <td><%= year.type %></td>
+                                                    <td><%= year.mop %></td>
+                                                    <td><%= year.comp %></td>
+                                                    <td><%= year.desc %></td>
+                                                </tr>
+                                            <% }); %>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            <% } else { %>
+                                <div class="content table-responsive table-full-width" style="margin-left: 1%;">
+                                    There are no entries for <%= year %>
+                                </div>
+                            <% } %>
                         </div>
                     </div>
                 </div>

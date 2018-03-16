@@ -1,75 +1,40 @@
-var api = require('./api.js');
+var main = require('./main.js');
 var db = require('./db.js');
 
-api.app.use(api.express.static(api.path.join(__dirname, 'public')));
+main.app.use(main.express.static(main.path.join(__dirname, 'public')));
 // app.use(cors());
 /* Use body-parser */
-api.app.use(api.bodyParser.json());
-api.app.use(api.bodyParser.urlencoded({ extended: false }));
+main.app.use(main.bodyParser.json());
+main.app.use(main.bodyParser.urlencoded({ extended: false }));
 
-api.app.set('view engine', 'ejs');
+// Use Cookie Parser
+main.app.use(main.cookieParser());
+
+main.app.set('view engine', 'ejs');
 
 // At root route render index.ejs
-api.app.get('/', function(req, res){
-    db.getDashboardData("n2rosari@edu.uwaterloo.ca", res);
+main.app.get('/', function(req, res){
+    var userCookie = JSON.parse(req.cookies['currentUser']); // Use req.signedCookies for cookies that have been signed
+    db.getDashboardData(userCookie.email, res);
 });
-api.app.get('/dashboard.ejs', function(req, res){
-    db.getDashboardData("n2rosari@edu.uwaterloo.ca", res);
+main.app.get('/dashboard.ejs', function(req, res){
+    var userCookie = JSON.parse(req.cookies['currentUser']); // Use req.signedCookies for cookies that have been signed
+    db.getDashboardData(userCookie.email, res);
 });
 
 // Pages (Single element in render object)
-api.app.get('/add-entries.ejs', function(req, res){ res.status(200).render('add-entries'); });
-api.app.get('/notifications.ejs', function(req, res){ res.status(200).render('notifications'); });
-api.app.get('/customization.ejs', function(req, res){
-    res.status(200).render('customization', { active: "Customization" });
-});
-api.app.get('/user.ejs', function(req, res){
-    res.status(200).render('user', { active: "User Profile" });
-});
-api.app.get('/login.ejs', function(req, res){
-    res.status(200).render('login', { active: "Login" });
-});
-api.app.get('/signup.ejs', function(req, res){
-    res.status(200).render('signup', { active: "Signup" });
-});
+main.app.get('/add-entries.ejs', function(req, res){ res.status(200).render('add-entries'); });
+main.app.get('/notifications.ejs', function(req, res){ res.status(200).render('notifications'); });
+main.app.get('/customization.ejs', function(req, res){ res.status(200).render('customization'); });
+main.app.get('/user.ejs', function(req, res){ res.status(200).render('user'); });
+main.app.get('/login.ejs', function(req, res){ res.status(200).render('login'); });
+main.app.get('/signup.ejs', function(req, res){ res.status(200).render('signup'); });
 // Pages (Multiple elements in the render object)
-api.app.get('/view-entries.ejs', function(req, res){
-    res.status(200).render('view-entries', {
-        active: "View Entries",
-        month: "March",
-        year: "2018",
-        entries: [{
-            "id": 1,
-            "date": "2018-03-01",
-            "ie": "E",
-            "amount": 90,
-            "mop": "CC",
-            "desc": "Description"
-        },{
-            "id": 2,
-            "date": "2018-03-01",
-            "ie": "I",
-            "amount": 100,
-            "mop": "CH",
-            "desc": "Description"
-        }],
-        ccEntries: [{
-            "id": 1,
-            "date": "2018-03-01",
-            "amount": 90,
-            "cc": "Double Double",
-            "mop": "CH"
-        },{
-            "id": 2,
-            "date": "2018-03-01",
-            "ie": "I",
-            "amount": 100,
-            "cc": "Double Double",
-            "mop": "CH",
-        }]
-    });
+main.app.get('/view-entries.ejs', function(req, res){
+    var userCookie = JSON.parse(req.cookies['currentUser']); // Use req.signedCookies for cookies that have been signed
+    db.renderViewEntries(userCookie.email, res);
 });
-api.app.get('/reports.ejs', function(req, res){
+main.app.get('/reports.ejs', function(req, res){
     res.status(200).render('reports', {
         active: "Reports",
         month: "March",
@@ -77,27 +42,27 @@ api.app.get('/reports.ejs', function(req, res){
     });
 });
 // Documentation
-api.app.get('/info', function(req, res){
+main.app.get('/info', function(req, res){
     res.status(200).render('documentation', { active: "User Profile" });
 });
 
-
 // On User Login
-api.app.post('/post-login', function(req, res){
+main.app.post('/post-login', function(req, res){
     var email = req.body.email;
     var pass = req.body.pass;
     db.login(email, pass, res);
 });
 // On User Signup
-api.app.post('/post-signup', function(req, res){
+main.app.post('/post-signup', function(req, res){
     var fName = req.body.fName;
     var lName = req.body.lName;
     var email = req.body.email;
     var pass = req.body.pass;
     db.signup(fName, lName, email, pass, res);
 });
+
 // Create entry
-api.app.post('/post-add-entry', function(req, res){
+main.app.post('/post-add-entry', function(req, res){
     var body = req.body; // Get body of request
     var email = body.email;
     var day = body.day;
@@ -112,9 +77,8 @@ api.app.post('/post-add-entry', function(req, res){
     var company = body.company;
     db.createEntry(email, day, month, year, ie, amount, mop, desc, type, country, company, res);
 });
-
 // Create credit card payment entry
-api.app.post('/post-add-credit-entry', function(req, res){
+main.app.post('/post-add-credit-entry', function(req, res){
     var body = req.body; // Get body of request
     var email = body.email;
     var day = body.day;
@@ -130,11 +94,11 @@ api.app.post('/post-add-credit-entry', function(req, res){
     var monthEnd = body.monthEnd;
     var yearEnd = body.yearEnd;
     // ***** CREATE DB FUNCTION AND EDIT PROPERTIES OF DB (ADD START/END DATE, ...)
-    db.createEntry(email, day, month, year, amount, mop, cc, dayStart, monthStart, yearStart, dayEnd, monthEnd,
+    db.createCreditEntry(email, day, month, year, amount, mop, cc, dayStart, monthStart, yearStart, dayEnd, monthEnd,
         yearEnd, res);
 });
 
-api.app.listen(7000, function () {
+main.app.listen(7000, function () {
     console.log('Example app listening on 7000');
 });
     

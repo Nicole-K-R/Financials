@@ -17,7 +17,9 @@
   },
   "homepage": "https://github.com/Nicole-K-R/Financials#readme",
   "dependencies": {
+    "cookie-parser": "^1.4.3",
     "express": "^4.16.2",
+    "js-cookie": "^2.2.0",
     "mongodb": "^3.0.4",
     "mongoose": "^5.0.9",
     "sha256": "^0.2.0"

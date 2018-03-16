@@ -107,9 +107,7 @@
 														Type of Entry<b class="caret"></b>
 													</button>
 													<ul class="dropdown-menu">
-														<li><a href="#" value="income" onclick="return selectDropdown('type-add','income')">Income</a></li>
 														<li><a href="#" value="savings" onclick="return selectDropdown('type-add','savings')">Savings</a></li>
-														<li class="divider"></li>
 														<li><a href="#" value="food" onclick="return selectDropdown('type-add','food')">Food</a></li>
 														<li><a href="#" value="rent" onclick="return selectDropdown('type-add','rent')">Rent</a></li>
 														<li><a href="#" value="personal" onclick="return selectDropdown('type-add','personal')">Personal</a></li>
@@ -284,14 +282,9 @@
 <script type="text/javascript">
 	console.log("Connected - Add Entries");
 	$(document).ready(function(){	
-
-		// Test
-		$("#mop-add-val").on("click", function(){
-			console.log($("#mop-add-val").text());
-		});
-
 		// Submit add entry form
 		$("#add-entry-btn").on('click', function(){
+			console.log("Add Entry Button Clicked");
 			var email;
 			// Get Property from Cookie
 			var value = "; " + document.cookie;
@@ -312,36 +305,77 @@
 			var mop = document.getElementById("mop-add-val").textContent
 			var type = document.getElementById("type-add-val").textContent
 			var desc = document.getElementById("desc").value.trim();
-
-			$.ajax({
-				method: "POST",
-				url: "/post-add-entry",
-				data: {
-					email: email,
-					day: day,
-					month: month,
-					year: year,
-					ie: ie, 
-					amount: amount,
-					mop: mop,
-					desc: desc,
-					type: type,
-					country: country,
-					company: comp,	
-				},
-				success: function(data){
-					// console.log(data);
-					if (data.error === 0){ Messenger().success({ message: data.Message }); }
-					else{ Messenger().error({ message: data.Message }); }
-				},
-				error: function(){
-					Messenger().error({ message: "Error on login" });
+			
+			// Validate Fields
+			var isValid = true;
+			var message = '';
+			if (year.length !== 4 || isNaN(year) !== false){ // Check if integer or Number ?????
+				isValid = false;
+				message = "Year must be a number with 4 digits"
+			} else if (parseInt(month) < 1 || parseInt(month) > 12){
+				isValid = false;
+				message = "Year must be a number between 1 and 12 inclusively";
+			} else if (country.lenght === 0 || isNaN(country) === false){
+				isValid = false;
+				message = "Country must not be blank and it must be a string";
+			} else if (country.lenght === 0 || isNaN(country) === false){
+				isValid = false;
+				message = "Company must not be blank and it must be a string";
+			} else if (isNaN(amount) !== false || amount <= 0){
+				isValid = false;
+				message = "Amount must be a positive number";
+			} else if (ie !== "I" && ie !== "E"){
+				isValid = false;
+				message = "Must be 'I' or 'E'";
+			} else if (ie === "E" && type === "Method of Payment"){
+				isValid = false;
+				message = "Entry is an expense but type was not selected";
+			} else{
+				var daysInMonth = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+				if ((year % 400 === 0) || (year % 4 === 0 && year % 100 !== 0)){
+					daysInMonth[1] = 29;
 				}
-			});
+				if (day < 1 || day > daysInMonth[month - 1]){
+					isValid = false;
+					message = "Day is not in range";
+				} else if (isNaN(day) !== false){
+					isValid = false;
+					message = "Day must be a number";
+				}
+			} 
+			if (isValid){ // Validation successful
+				console.log("Verification for entry is successful");
+				$.ajax({
+					method: "POST",
+					url: "/post-add-entry",
+					data: {
+						email: email,
+						day: day,
+						month: month,
+						year: year,
+						ie: ie, 
+						amount: amount,
+						mop: mop,
+						desc: desc,
+						type: type,
+						country: country,
+						company: comp,	
+					},
+					success: function(data){
+						// console.log(data);
+						if (data.error === 0){ Messenger().success({ message: data.Message }); }
+						else{ Messenger().error({ message: data.Message }); }
+					},
+					error: function(){
+						Messenger().error({ message: "Error on login" });
+					}
+				});
+			} else{ Messenger().error({ message: message }); } // Error on validation	
 		});
 
 		// Submit add credit card payment form
 		$("#add-credit-entry-btn").on('click', function(){
+			console.log("Add Credit Payment Entry Button Clicked");
 			var email;
 			// Get Property from Cookie
 			var value = "; " + document.cookie;
@@ -358,42 +392,94 @@
 			var amount = $("#amount-credit").val().trim();
 			var mop = document.getElementById("mop-credit-val").textContent
 			var cc = document.getElementById("cc-credit-val").textContent
-			var startYear = $("#year-start").val().trim();
-			var startMonth = $("#month-start").val().trim();
-			var startDay = $("#day-start").val().trim();
-			var endYear = $("#year-end").val().trim();
-			var endMonth = $("#month-end").val().trim();
-			var endDay = $("#day-end").val().trim();
+			var yearStart = $("#year-start").val().trim();
+			var monthStart = $("#month-start").val().trim();
+			var dayStart = $("#day-start").val().trim();
+			var yearEnd = $("#year-end").val().trim();
+			var monthEnd = $("#month-end").val().trim();
+			var dayEnd = $("#day-end").val().trim();
 
-			$.ajax({
-				method: "POST",
-				url: "/post-add-credit-entry",
-				data: {
-					email: email,
-					year: year,
-					month: month,
-					day: day,
-					amount: amount,
-					mop: mop,
-					cc: cc,
-					dayStart: dayStart,
-					monthStart: monthStart,
-					yearStart: yearStart,
-					dayEnd: dayEnd,
-					monthEnd: monthEnd, 
-					yearEnd: yearEnd 
-				},
-				success: function(data){
-					// console.log(data);
-					if (data.error === 0){ Messenger().success({ message: data.Message }); }
-					else{ Messenger().error({ message: data.Message }); }
-				},
-				error: function(){
-					Messenger().error({ message: "Error on login" });
+			// Validate Fields
+			var isValid = true;
+			var message = '';
+			if (year.length !== 4 || isNaN(year) !== false){ // Check if integer or Number ?????
+				isValid = false;
+				message = "Year must be a number with 4 digits"
+			} else if (yearStart.length !== 4 || isNaN(yearStart) !== false){ // Check if integer or Number ?????
+				isValid = false;
+				message = "Start Year must be a number with 4 digits"
+			} else if (yearEnd.length !== 4 || isNaN(yearEnd) !== false){ // Check if integer or Number ?????
+				isValid = false;
+				message = "End Year must be a number with 4 digits"
+			} else if (parseInt(month) < 1 || parseInt(month) > 12){
+				isValid = false;
+				message = "Year must be a number between 1 and 12 inclusively";
+			}  else if (parseInt(monthStart) < 1 || parseInt(monthStart) > 12){
+				isValid = false;
+				message = "Start Year must be a number between 1 and 12 inclusively";
+			}  else if (parseInt(monthEnd) < 1 || parseInt(monthEnd) > 12){
+				isValid = false;
+				message = "End Year must be a number between 1 and 12 inclusively";
+			} else if (isNaN(amount) !== false || amount <= 0){
+				isValid = false;
+				message = "Amount must be a positive number";
+			}  else{
+				var daysInMonth = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+				if ((year % 400 === 0) || (year % 4 === 0 && year % 100 !== 0)){ daysInMonth[1] = 29; }
+				if (day < 1 || day > daysInMonth[month - 1]){
+					isValid = false;
+					message = "Day is not in range";
+				} else if (dayStart < 1 || dayStart > daysInMonth[monthStart - 1]){ // Start Date
+					isValid = false;
+					message = "Start Day is not in range";
+				} else if (dayEnd < 1 || dayEnd > daysInMonth[monthEnd - 1]){ // End Date
+					isValid = false;
+					message = "End Day is not in range";
+				} else if (isNaN(day) !== false){
+					isValid = false;
+					message = "Day must be a number";
+				} else if (isNaN(dayStart) !== false){
+					isValid = false;
+					message = "Start Day must be a number";
+				} else if (isNaN(dayEnd) !== false){
+					isValid = false;
+					message = "End Day must be a number";
 				}
-			});
+			}
+			if (isValid){ // If validation was successful
+				console.log("Verification for credit is successful");
+				$.ajax({
+					method: "POST",
+					url: "/post-add-credit-entry",
+					data: {
+						email: email,
+						year: year,
+						month: month,
+						day: day,
+						amount: amount,
+						mop: mop,
+						cc: cc,
+						dayStart: dayStart,
+						monthStart: monthStart,
+						yearStart: yearStart,
+						dayEnd: dayEnd,
+						monthEnd: monthEnd, 
+						yearEnd: yearEnd 
+					},
+					success: function(data){
+						// console.log(data);
+						if (data.error === 0){ Messenger().success({ message: data.Message }); }
+						else{ Messenger().error({ message: data.Message }); }
+					},
+					error: function(){
+						Messenger().error({ message: "Error on creating credit card payment entries" });
+					}
+				});
+			} else { 
+				console.log("ERROR: ", message);
+				Messenger().error({ message: message }); 
+			} // If validation has an error
 		});
 	});
 </script>
-
 </html>
