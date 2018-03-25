@@ -345,6 +345,7 @@
 			} 
 			if (isValid){ // Validation successful
 				console.log("Verification for entry is successful");
+				if (ie === "I"){ type = "income"; }
 				$.ajax({
 					method: "POST",
 					url: "/post-add-entry",

@@ -56,7 +56,7 @@
                                     <div class="col-xs-7">
                                         <div class="numbers">
                                             <p>Savings</p>
-                                            $<%= savings %>
+                                            $<%= savings %> (<%= savingsPer %>%)
                                         </div>
                                     </div>
                                 </div>
@@ -75,7 +75,7 @@
                                     <div class="col-xs-7">
                                         <div class="numbers">
                                             <p>Food/Groceries</p>
-                                            $<%= food %>
+                                            $<%= food %> (<%= foodPer %>%)
                                         </div>
                                     </div>
                                 </div>
@@ -94,7 +94,7 @@
                                     <div class="col-xs-7">
                                         <div class="numbers">
                                             <p>Rent/Utilities</p>
-                                            $<%= rent %>
+                                            $<%= rent %> (<%= rentPer %>%)
                                         </div>
                                     </div>
                                 </div>
@@ -113,7 +113,7 @@
                                     <div class="col-xs-7">
                                         <div class="numbers">
                                             <p>Personal</p>
-                                            $<%= personal %>
+                                            $<%= personal %> (<%= personalPer %>%)
                                         </div>
                                     </div>
                                 </div>
@@ -133,7 +133,7 @@
                                     <div class="col-xs-7">
                                         <div class="numbers">
                                             <p>Entertainment</p>
-                                            $<%= entertainment %>
+                                            $<%= entertainment %> (<%= entertainmentPer %>%)
                                         </div>
                                     </div>
                                 </div>
@@ -152,7 +152,7 @@
                                     <div class="col-xs-7">
                                         <div class="numbers">
                                             <p>School</p>
-                                            $<%= school %>
+                                            $<%= school %> (<%= schoolPer %>%)
                                         </div>
                                     </div>
                                 </div>
@@ -171,7 +171,7 @@
                                     <div class="col-xs-7">
                                         <div class="numbers">
                                             <p>Miscellaneous</p>
-                                            $<%= miscellaneous %>
+                                            $<%= miscellaneous %> (<%= miscellaneousPer %>%)
                                         </div>
                                     </div>
                                 </div>
@@ -190,7 +190,7 @@
                                     <div class="col-xs-7">
                                         <div class="numbers">
                                             <p>Projects</p>
-                                            $<%= projects %>
+                                            $<%= projects %> (<%= projectsPer %>%)
                                         </div>
                                     </div>
                                 </div>
@@ -229,17 +229,6 @@
 	<script type="text/javascript">
     	$(document).ready(function(){
         	demo.initChartist();
-        	// $.notify({
-            // 	icon: 'ti-gift',
-            // 	message: "Welcome to <b>Paper Dashboard</b> - a beautiful Bootstrap freebie for your next project."
-            // },{
-            //     type: 'success',
-            //     timer: 4000,
-            //     // placement: {
-            //     //     from: from,
-            //     //     align: align
-            //     // }
-            // });
     	});
 	</script>
 </html>

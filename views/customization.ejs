@@ -2,8 +2,171 @@
 <%- include templates/header.ejs %>
         <div class="content">
             <div class="container-fluid">
-                <!-- PUT CONTENT HERE -->
+				<!-- Customized  -->
+                <div class="row">
+                    <div class="col-md-12">
+						<div class="card">
+							<div class="header">
+								<h4 class="title">Customize Cap Per Type of Expense</h4>
+							</div>
+							<div class="content">
+								<form>
+                                    <!-- Savings, Food, Rent -->
+									<div class="row"> 
+										<div class="col-md-4">
+											<div class="form-group">
+												<label for="savings">Savings</label>
+												<input id="savings" type="text" class="form-control border-input" value="<%= caps.savings %>">
+											</div>
+										</div>
+										<div class="col-md-4">
+											<div class="form-group">
+												<label for="food">Food</label>
+												<input id="food" type="text" class="form-control border-input" value="<%= caps.food %>">
+											</div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label for="rent">Rent</label>
+                                                <input id="rent" type="text" class="form-control border-input" value="<%= caps.rent %>">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- Personal, Entertainment, School -->
+                                    <div class="row"> 
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label for="personal">Personal</label>
+                                                <input id="personal" type="text" class="form-control border-input" value="<%= caps.personal %>">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label for="entertainment">Entertainment</label>
+                                                <input id="entertainment" type="text" class="form-control border-input" value="<%= caps.entertainment %>">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label for="school">School</label>
+                                                <input id="school" type="text" class="form-control border-input" value="<%= caps.school %>">
+                                            </div>
+                                        </div>
+									</div>
+									<!-- Miscellaneous, Projects -->
+                                    <div class="row"> 
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label for="misc">Miscellaneous</label>
+                                                <input id="misc" type="text" class="form-control border-input" value="<%= caps.miscellaneous %>">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label for="projects">Projects</label>
+                                                <input id="projects" type="text" class="form-control border-input" value="<%= caps.projects %>">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- Button -->
+                                    <div class="row">
+                                        <div class="col-md-4" style="margin: 0 33%;">
+                                            <div class="form-group">
+                                                <label for="misc">Total</label>
+                                                <input id="misc" type="text" class="form-control border-input" value="<%= caps.savings + caps.food + caps.rent + caps.personal + caps.entertainment + caps.school + caps.miscellaneous + caps.projects %>">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="text-center" style="margin-bottom: 60px;margin-top: 40px;">
+                                            <button id="custom-btn" type="button" class="btn btn-info btn-fill btn-wd">Update Customization</button>
+                                        </div>
+                                    </div>
+									<div class="clearfix"></div>
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
             </div>
         </div>
 <%- include templates/footer.ejs %>
+<script type="text/javascript">
+	console.log("Connected - Update Customization");
+	$(document).ready(function(){	
+		// Submit add entry form
+		$("#custom-btn").on('click', function(){
+			console.log("Update Customization Button Clicked");
+            // Get values from form
+			var savings = parseInt($("#savings").val().trim());
+			var food = parseInt($("#food").val().trim());
+			var rent = parseInt($("#rent").val().trim());
+			var personal = parseInt($("#personal").val().trim());
+            var entertainment = parseInt($("#entertainment").val().trim());
+            var school = parseInt($("#school").val().trim());
+			var misc = parseInt($("#misc").val().trim());
+            var projects = parseInt($("#projects").val().trim());
+            var isValid = true;
+            
+            if (isNaN(savings)){
+                isValid = false
+                Messenger().error({ message: "Savings field must be a number" })
+            }
+            if (isNaN(food)){
+                isValid = false
+                Messenger().error({ message: "Food field must be a number" })
+            }
+            if (isNaN(rent)){
+                isValid = false
+                Messenger().error({ message: "Rent field must be a number" })
+            }
+            if (isNaN(personal)){
+                isValid = false
+                Messenger().error({ message: "Personal field must be a number" })
+            }
+            if (isNaN(entertainment)){
+                isValid = false
+                Messenger().error({ message: "Entertainment field must be a number" })
+            }
+            if (isNaN(school)){
+                isValid = false
+                Messenger().error({ message: "School field must be a number" })
+            }
+            if (isNaN(misc)){
+                isValid = false
+                Messenger().error({ message: "Miscellaneous field must be a number" })
+            }
+            if (isNaN(projects)){
+                isValid = false
+                Messenger().error({ message: "Projects field must be a number" })
+            }
+			
+			if (isValid){ // Validation successful
+				console.log("Verification for entry is successful");
+				$.ajax({
+					method: "POST",
+					url: "/post-update-customization",
+					data: {
+                        savings: savings,
+                        food: food, 
+                        rent: rent,
+                        personal: personal,
+                        entertainment: entertainment,
+                        school: school,
+                        misc: misc,
+                        projects: projects
+					},
+					success: function(data){
+						// console.log(data);
+						if (data.error === 0){ Messenger().success({ message: data.Message }); }
+						else{ Messenger().error({ message: data.Message }); }
+					},
+					error: function(){
+						Messenger().error({ message: "Error updating customization" });
+					}
+				});
+			} else{ Messenger().error({ message: message }); } // Error on validation	
+		});
+	});
+</script>
 </html>

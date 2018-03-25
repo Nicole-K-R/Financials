@@ -14,36 +14,81 @@ main.app.set('view engine', 'ejs');
 
 // At root route render index.ejs
 main.app.get('/', function(req, res){
-    var userCookie = JSON.parse(req.cookies['currentUser']); // Use req.signedCookies for cookies that have been signed
-    db.getDashboardData(userCookie.email, res);
+    if (req.cookies['currentUser'] === undefined){
+        res.render('login');
+    } else {
+        var userCookie = JSON.parse(req.cookies['currentUser']); // Use req.signedCookies for cookies that have been signed
+        db.getDashboardData(userCookie.email, res);
+    }
 });
 main.app.get('/dashboard.ejs', function(req, res){
-    var userCookie = JSON.parse(req.cookies['currentUser']); // Use req.signedCookies for cookies that have been signed
-    db.getDashboardData(userCookie.email, res);
+    if (req.cookies['currentUser'] === undefined){
+        res.render('login');
+    } else {
+        var userCookie = JSON.parse(req.cookies['currentUser']); // Use req.signedCookies for cookies that have been signed
+        db.getDashboardData(userCookie.email, res);
+    }
 });
 
 // Pages (Single element in render object)
-main.app.get('/add-entries.ejs', function(req, res){ res.status(200).render('add-entries'); });
-main.app.get('/notifications.ejs', function(req, res){ res.status(200).render('notifications'); });
-main.app.get('/customization.ejs', function(req, res){ res.status(200).render('customization'); });
-main.app.get('/user.ejs', function(req, res){ res.status(200).render('user'); });
 main.app.get('/login.ejs', function(req, res){ res.status(200).render('login'); });
 main.app.get('/signup.ejs', function(req, res){ res.status(200).render('signup'); });
+main.app.get('/add-entries.ejs', function(req, res){ 
+    if (req.cookies['currentUser'] === undefined){
+        res.render('login');
+    } else {
+        res.status(200).render('add-entries'); 
+    }
+});
+main.app.get('/notifications.ejs', function(req, res){ 
+    if (req.cookies['currentUser'] === undefined){
+        res.render('login');
+    } else {
+        res.status(200).render('notifications'); 
+    }
+});
+main.app.get('/customization.ejs', function(req, res){ 
+    if (req.cookies['currentUser'] === undefined){
+        res.render('login');
+    } else {
+        var userCookie = JSON.parse(req.cookies['currentUser']);
+        db.getCustomizationCaps(userCookie.email, res);
+    }
+});
+main.app.get('/user.ejs', function(req, res){ 
+    if (req.cookies['currentUser'] === undefined){
+        res.render('login');
+    } else {
+        res.status(200).render('user');
+    }
+});
 // Pages (Multiple elements in the render object)
 main.app.get('/view-entries.ejs', function(req, res){
-    var userCookie = JSON.parse(req.cookies['currentUser']); // Use req.signedCookies for cookies that have been signed
-    db.renderViewEntries(userCookie.email, res);
+    if (req.cookies['currentUser'] === undefined){
+        res.render('login');
+    } else {
+        var userCookie = JSON.parse(req.cookies['currentUser']); // Use req.signedCookies for cookies that have been signed
+        db.renderViewEntries(userCookie.email, res);
+    }
 });
 main.app.get('/reports.ejs', function(req, res){
-    res.status(200).render('reports', {
-        active: "Reports",
-        month: "March",
-        year: "2018"
-    });
+    if (req.cookies['currentUser'] === undefined){
+        res.render('login');
+    } else {
+        res.status(200).render('reports', {
+            active: "Reports",
+            month: "March",
+            year: "2018"
+        });
+    }
 });
 // Documentation
 main.app.get('/info', function(req, res){
-    res.status(200).render('documentation', { active: "User Profile" });
+    if (req.cookies['currentUser'] === undefined){
+        res.render('login');
+    } else {
+        res.status(200).render('documentation', { active: "User Profile" });
+    }
 });
 
 // On User Login
@@ -97,6 +142,24 @@ main.app.post('/post-add-credit-entry', function(req, res){
     db.createCreditEntry(email, day, month, year, amount, mop, cc, dayStart, monthStart, yearStart, dayEnd, monthEnd,
         yearEnd, res);
 });
+// Update customization caps
+main.app.post('/post-update-customization', function(req, res){
+    var caps = req.body;
+    var email = JSON.parse(req.cookies['currentUser']).email;
+    var customization = {
+        income: parseInt(caps.income),
+        savings: parseInt(caps.savings),
+        food: parseInt(caps.food),
+        rent: parseInt(caps.rent),
+        personal: parseInt(caps.personal),
+        entertainment: parseInt(caps.entertainment),
+        school: parseInt(caps.school),
+        miscellaneous: parseInt(caps.misc),
+        projects: parseInt(caps.projects)
+    }
+    db.updateCustomization(email, customization, res);
+});
+
 
 main.app.listen(7000, function () {
     console.log('Example app listening on 7000');
